@@ -1,3 +1,8 @@
+/**
+ * @fileOverview GrovePi functions.
+ * @author @dexterind
+ * @version 1.2.2
+ */
 var i2c         = require('i2c')
   , fs          = require('fs')
   , sleep       = require('sleep')
@@ -369,6 +374,28 @@ var self = module.exports = {
 
     self.pinMode(pin, self.INPUT)
     self.analogRead(pin, function onAirQualityRead(res) {
+      var number = parseInt(res)
+      callback(number)
+    })
+
+    return self
+  },
+
+  sound: function(pin, callback) {
+    if (isBoardBusy) {
+      /*
+      self.queue.add({
+        'funcName' : 'sound',
+        'pin'      : pin,
+        'args'     : [].slice.call(arguments)
+      })
+      */
+      return self
+    }
+    isBoardBusy = true
+
+    self.pinMode(pin, self.INPUT)
+    self.analogRead(pin, function onSoundRead(res) {
       var number = parseInt(res)
       callback(number)
     })
